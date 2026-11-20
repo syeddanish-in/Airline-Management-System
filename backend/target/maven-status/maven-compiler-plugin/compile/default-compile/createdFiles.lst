@@ -1,1 +1,4 @@
+com\airline\management\flight\controller\FlightController.class
+com\airline\management\flight\model\Flight.class
+com\airline\management\flight\service\FlightService.class
 com\airline\management\flight\FlightBookingApplication.class
