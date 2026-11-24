@@ -12,22 +12,22 @@ public class FlightService {
             new Flight(1L, "EK501", "Dubai", "Mumbai", "10:30", 850.0),
             new Flight(2L, "EK502", "Dubai", "Delhi", "14:45", 1200.0)));
 
+    // Return All Flight
     public List<Flight> getAllFlights() {
         return flights;
     }
 
+    // Add Flight
     public Flight addFlight(Flight flight) {
         flights.add(flight);
         return flight;
     }
 
+    // Get Details by ID
     public Flight getFlightById(Long id) {
-        for (Flight flight : flights) {
-            if (flight.getId().equals(id)) {
-                return flight;
-            }
-        }
-        return null;
+        return flights.stream()
+                .filter(flight -> flight.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
-
 }
