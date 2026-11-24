@@ -7,24 +7,30 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 public class FlightController {
 
-    private final FlightService flightservice;
+    private final FlightService flightService;
 
-    public FlightController(FlightService flightservice) {
-        this.flightservice = flightservice;
+    public FlightController(FlightService flightService) {
+        this.flightService = flightService;
     }
 
     @GetMapping("/flights")
     public List<Flight> getFlights() {
-        return flightservice.getAllFlights();
+        return flightService.getAllFlights();
+    }
+
+    @GetMapping("/flights/{id}")
+    public Flight getFlightById(@PathVariable Long id) {
+        return flightService.getFlightById(id);
     }
 
     @PostMapping("/flights")
     public Flight addFlight(@RequestBody Flight flight) {
-        return flightservice.addFlight(flight);
+        return flightService.addFlight(flight);
     }
 
 }
