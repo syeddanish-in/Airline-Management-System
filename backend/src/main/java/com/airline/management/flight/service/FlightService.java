@@ -4,6 +4,7 @@ import com.airline.management.flight.model.Flight;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 public class FlightService {
@@ -24,10 +25,23 @@ public class FlightService {
     }
 
     // Get Details by ID
-    public Flight getFlightById(Long id) {
+    public Optional<Flight> getFlightById(Long id) {
         return flights.stream()
                 .filter(flight -> flight.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
+
+    // Update Flight
+    public Flight updateFlight(Long id, Flight updateFlight) {
+        Flight existingFlight = getFlightById(id)
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+        existingFlight.setFlightNumber(updateFlight.getFlightNumber());
+        existingFlight.setOrigin(updateFlight.getOrigin());
+        existingFlight.setDestination(updateFlight.getDestination());
+        existingFlight.setDepartureTime(updateFlight.getDepartureTime());
+        existingFlight.setPrice(updateFlight.getPrice());
+
+        return existingFlight;
+    }
+
 }
