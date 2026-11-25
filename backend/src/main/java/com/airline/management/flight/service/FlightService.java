@@ -44,4 +44,10 @@ public class FlightService {
         return existingFlight;
     }
 
+    // Delete Flight
+    public void deleteFlight(Long id) {
+        Flight flight = getFlightById(id).orElseThrow(() -> new RuntimeException("Flight not found"));
+
+        flights.remove(flight);
+    }
 }
