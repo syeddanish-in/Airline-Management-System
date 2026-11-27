@@ -1,15 +1,42 @@
+
 package com.airline.management.flight.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+
+@Entity
+@Table(name = "flights")
 public class Flight {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String flightNumber;
+
+    @Column(nullable = false)
     private String origin;
+
+    @Column(nullable = false)
     private String destination;
+
     private String departureTime;
+
+    @Column(nullable = false)
     private double price;
 
-    // constructor
-    public Flight(Long id, String flightNumber, String origin, String destination, String departureTime, double price) {
+    // Required by JPA
+    public Flight() {
+    }
+
+    // Constructor for creating Flight objects
+    public Flight(Long id, String flightNumber, String origin,
+            String destination, String departureTime, double price) {
         this.id = id;
         this.flightNumber = flightNumber;
         this.origin = origin;
@@ -18,7 +45,7 @@ public class Flight {
         this.price = price;
     }
 
-    // getters
+    // Getters
     public Long getId() {
         return id;
     }
@@ -43,7 +70,7 @@ public class Flight {
         return price;
     }
 
-    // setters
+    // Setters
     public void setId(Long id) {
         this.id = id;
     }
