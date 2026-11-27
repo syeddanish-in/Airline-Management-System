@@ -1,53 +1,66 @@
 package com.airline.management.flight.service;
 
 import com.airline.management.flight.model.Flight;
+import com.airline.management.flight.repository.FlightRepository;
+
 import java.util.List;
-import java.util.ArrayList;
-import org.springframework.stereotype.Service;
 import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class FlightService {
 
-    private final List<Flight> flights = new ArrayList<>(List.of(
-            new Flight(1L, "EK501", "Dubai", "Mumbai", "10:30", 850.0),
-            new Flight(2L, "EK502", "Dubai", "Delhi", "14:45", 1200.0)));
+    private final FlightRepository flightRepository;
 
-    // Return All Flight
+    // Constructor injection
+    public FlightService(FlightRepository flightRepository) {
+        this.flightRepository = flightRepository;
+    }
+
+    // Get all flights
     public List<Flight> getAllFlights() {
-        return flights;
+        return flightRepository.findAll();
     }
 
-    // Add Flight
+    // Add flight
     public Flight addFlight(Flight flight) {
-        flights.add(flight);
-        return flight;
+        flight.setId(null);
+        return flightRepository.save(flight);
     }
 
-    // Get Details by ID
+    // Get flight by ID
     public Optional<Flight> getFlightById(Long id) {
-        return flights.stream()
-                .filter(flight -> flight.getId().equals(id))
-                .findFirst();
+        return flightRepository.findById(id);
     }
 
-    // Update Flight
-    public Flight updateFlight(Long id, Flight updateFlight) {
-        Flight existingFlight = getFlightById(id)
-                .orElseThrow(() -> new RuntimeException("Flight not found"));
-        existingFlight.setFlightNumber(updateFlight.getFlightNumber());
-        existingFlight.setOrigin(updateFlight.getOrigin());
-        existingFlight.setDestination(updateFlight.getDestination());
-        existingFlight.setDepartureTime(updateFlight.getDepartureTime());
-        existingFlight.setPrice(updateFlight.getPrice());
+    // Update flight
+    public Flight updateFlight(Long id, Flight updatedFlight) {
 
-        return existingFlight;
+        Flight existingFlight = flightRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Flight not found with ID: " + id));
+
+        existingFlight.setFlightNumber(updatedFlight.getFlightNumber());
+        existingFlight.setOrigin(updatedFlight.getOrigin());
+        existingFlight.setDestination(updatedFlight.getDestination());
+        existingFlight.setDepartureTime(updatedFlight.getDepartureTime());
+        existingFlight.setPrice(updatedFlight.getPrice());
+
+        return flightRepository.save(existingFlight);
     }
 
-    // Delete Flight
+    // Delete flight
     public void deleteFlight(Long id) {
-        Flight flight = getFlightById(id).orElseThrow(() -> new RuntimeException("Flight not found"));
 
-        flights.remove(flight);
+        Flight existingFlight = flightRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Flight not found with ID: " + id));
+
+        flightRepository.delete(existingFlight);
     }
 }
