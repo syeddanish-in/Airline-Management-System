@@ -1,5 +1,9 @@
+com\airline\management\flight\repository\PassengerRepository.class
+com\airline\management\flight\service\PassengerService.class
 com\airline\management\flight\controller\FlightController.class
+com\airline\management\flight\controller\PassengerController.class
 com\airline\management\flight\repository\FlightRepository.class
 com\airline\management\flight\model\Flight.class
 com\airline\management\flight\service\FlightService.class
+com\airline\management\flight\model\Passenger.class
 com\airline\management\flight\FlightBookingApplication.class

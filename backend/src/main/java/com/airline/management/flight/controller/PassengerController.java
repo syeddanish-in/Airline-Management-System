@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/passengers")
 public class PassengerController {
@@ -27,7 +29,9 @@ public class PassengerController {
     }
 
     @PostMapping
-    public ResponseEntity<Passenger> addPassenger(@RequestBody Passenger passenger) {
+    public ResponseEntity<Passenger> addPassenger(
+            @Valid @RequestBody Passenger passenger) {
+
         Passenger savedPassenger = passengerService.addPassenger(passenger);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPassenger);
@@ -46,7 +50,7 @@ public class PassengerController {
     @PutMapping("/{id}")
     public Passenger updatePassenger(
             @PathVariable Long id,
-            @RequestBody Passenger passenger) {
+            @Valid @RequestBody Passenger passenger) {
 
         return passengerService.updatePassenger(id, passenger);
     }
